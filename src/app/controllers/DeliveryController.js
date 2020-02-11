@@ -5,6 +5,9 @@ import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
 
+import NewDeliveryMail from '../jobs/NewDeliveryMail';
+import Queue from '../../lib/Queue';
+
 class DeliveryController {
   async index(req, res) {
     // renders 20 per page
@@ -41,7 +44,7 @@ class DeliveryController {
       return res.status(400).json({ error: 'Validation error' });
     }
 
-    const { deliveryman_id, recipient_id } = req.body;
+    const { deliveryman_id, recipient_id, product } = req.body;
 
     // Check if Deliveryman exists
     const deliveryman = await Deliveryman.findByPk(deliveryman_id);
@@ -58,6 +61,12 @@ class DeliveryController {
     }
 
     const delivery = await Delivery.create(req.body);
+
+    await Queue.add(NewDeliveryMail.key, {
+      deliveryman,
+      recipient,
+      product,
+    });
 
     return res.json(delivery);
   }
