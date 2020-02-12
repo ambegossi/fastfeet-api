@@ -9,6 +9,8 @@ import DeliverymanController from './app/controllers/DeliverymanController';
 import FileController from './app/controllers/FileController';
 import DeliveryController from './app/controllers/DeliveryController';
 import DeliverymanDeliveryController from './app/controllers/DeliverymanDeliveryController';
+import ProblematicDeliveriesController from './app/controllers/ProblematicDeliveriesController';
+import DeliveryProblemController from './app/controllers/DeliveryProblemController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -20,6 +22,9 @@ routes.post('/sessions', SessionController.store);
 
 routes.get('/deliverymens/:id/deliveries', DeliverymanDeliveryController.index); // query param ?delivered=yes/not
 routes.put('/delivery/:id', DeliverymanDeliveryController.update);
+
+routes.post('/deliveries/:id/problems', DeliveryProblemController.store);
+routes.get('/deliveries/:id/problems', DeliveryProblemController.index);
 
 routes.use(authMiddleware); // Only applied for routes that come after
 
@@ -39,5 +44,11 @@ routes.post('/deliveries', DeliveryController.store);
 routes.get('/deliveries', DeliveryController.index);
 routes.put('/deliveries/:id', DeliveryController.update);
 routes.delete('/deliveries/:id', DeliveryController.delete);
+
+routes.get('/deliveries/problems', ProblematicDeliveriesController.index);
+routes.delete(
+  '/problems/:id/cancel-delivery',
+  DeliveryProblemController.delete
+);
 
 export default routes;
