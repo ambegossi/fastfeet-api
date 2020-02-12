@@ -8,8 +8,6 @@ class NewDeliveryMail {
   async handle({ data }) {
     const { deliveryman, product, recipient } = data;
 
-    console.log('A fila executou');
-
     await Mail.sendMail({
       to: `${deliveryman.name} <${deliveryman.email}>`,
       subject: 'Nova encomenda cadastrada - FastFeet',
