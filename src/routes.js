@@ -19,6 +19,7 @@ routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
 routes.get('/deliverymens/:id/deliveries', DeliverymanDeliveryController.index); // query param ?delivered=yes/not
+routes.put('/delivery/:id', DeliverymanDeliveryController.update);
 
 routes.use(authMiddleware); // Only applied for routes that come after
 

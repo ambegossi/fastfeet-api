@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-import { parseISO, getHours, isBefore } from 'date-fns';
+import { parseISO, isBefore } from 'date-fns';
+import validateTime from '../../utils/validateTime';
 
 import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
@@ -92,12 +93,8 @@ class DeliveryController {
 
     if (start_date) {
       // req.body format: "2020-02-11T16:00:00-03:00"
-      const parsedStartDate = parseISO(start_date);
-
-      const hourStart = getHours(parsedStartDate);
-
       // Validate time between 8-18 hours
-      if (hourStart < 8 || hourStart > 18) {
+      if (!validateTime(start_date)) {
         return res.status(400).json({
           error: 'Withdrawals can only be made between 08:00 and 18:00',
         });
