@@ -13,7 +13,7 @@ import Queue from '../../lib/Queue';
 
 class DeliveryController {
   async index(req, res) {
-    // renders 20 per page
+    // renders 6 per page
     const { page = 1, q } = req.query;
 
     // check if user passed a Query Parameter

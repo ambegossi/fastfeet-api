@@ -31,6 +31,7 @@ routes.use(authMiddleware); // Only applied for routes that come after
 routes.put('/users', UserController.update);
 
 routes.post('/recipients', RecipientController.store);
+routes.get('/recipients', RecipientController.index);
 routes.put('/recipients/:recipientId', RecipientController.update);
 
 routes.post('/deliverymens', DeliverymanController.store);

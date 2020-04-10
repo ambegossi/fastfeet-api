@@ -1,7 +1,36 @@
 import * as Yup from 'yup';
+import Sequelize from 'sequelize';
 import Recipient from '../models/Recipient';
 
 class RecipientController {
+  async index(req, res) {
+    const { page = 1, q } = req.query;
+
+    // check if user passed a Query Parameter
+    if (q) {
+      const recipient = await Recipient.findAll({
+        where: {
+          name: {
+            [Sequelize.Op.iLike]: q,
+          },
+        },
+        order: ['created_at'],
+        limit: 6,
+        offset: (page - 1) * 6,
+      });
+
+      return res.json(recipient);
+    }
+
+    const recipient = await Recipient.findAll({
+      order: ['created_at'],
+      limit: 6,
+      offset: (page - 1) * 6,
+    });
+
+    return res.json(recipient);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
