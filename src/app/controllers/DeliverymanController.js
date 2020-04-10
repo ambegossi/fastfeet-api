@@ -1,11 +1,41 @@
 import * as Yup from 'yup';
+import Sequelize from 'sequelize';
 import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 
 class DeliverymanController {
   async index(req, res) {
+    const { page = 1, q } = req.query;
+
+    // check if user passed a Query Parameter
+    if (q) {
+      const deliverymens = await Deliveryman.findAll({
+        where: {
+          name: {
+            [Sequelize.Op.iLike]: q,
+          },
+        },
+        attributes: ['id', 'name', 'email', 'avatar_id'],
+        order: ['created_at'],
+        limit: 6,
+        offset: (page - 1) * 6,
+        include: [
+          {
+            model: File,
+            as: 'avatar',
+            attributes: ['name', 'path', 'url'],
+          },
+        ],
+      });
+
+      return res.json(deliverymens);
+    }
+
     const deliverymens = await Deliveryman.findAll({
       attributes: ['id', 'name', 'email', 'avatar_id'],
+      order: ['created_at'],
+      limit: 6,
+      offset: (page - 1) * 6,
       include: [
         {
           model: File,
@@ -14,6 +44,7 @@ class DeliverymanController {
         },
       ],
     });
+
     return res.json(deliverymens);
   }
 
