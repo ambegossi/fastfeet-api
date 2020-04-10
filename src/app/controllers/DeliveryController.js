@@ -1,10 +1,12 @@
 import * as Yup from 'yup';
 import { parseISO, isBefore } from 'date-fns';
+import Sequelize from 'sequelize';
 import validateTime from '../../utils/validateTime';
 
 import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
+import File from '../models/File';
 
 import NewDeliveryMail from '../jobs/NewDeliveryMail';
 import Queue from '../../lib/Queue';
@@ -12,21 +14,84 @@ import Queue from '../../lib/Queue';
 class DeliveryController {
   async index(req, res) {
     // renders 20 per page
-    const { page = 1 } = req.query;
+    const { page = 1, q } = req.query;
+
+    // check if user passed a Query Parameter
+    if (q) {
+      const deliveries = await Delivery.findAll({
+        where: {
+          product: {
+            [Sequelize.Op.iLike]: q,
+          },
+        },
+        order: ['created_at'],
+        attributes: [
+          'id',
+          'product',
+          'canceled_at',
+          'start_date',
+          'end_date',
+          'signature_id',
+        ],
+        limit: 6,
+        offset: (page - 1) * 6,
+        include: [
+          {
+            model: Recipient,
+            as: 'recipient',
+            attributes: [
+              'id',
+              'name',
+              'state',
+              'city',
+              'street',
+              'zip_code',
+              'street_number',
+            ],
+          },
+          {
+            model: Deliveryman,
+            as: 'deliveryman',
+            attributes: ['id', 'name'],
+          },
+          {
+            model: File,
+            as: 'signature',
+            attributes: ['id', 'path', 'url'],
+          },
+        ],
+      });
+
+      return res.json(deliveries);
+    }
 
     const deliveries = await Delivery.findAll({
-      limit: 20,
-      offset: (page - 1) * 20,
+      order: ['created_at'],
+      limit: 6,
+      offset: (page - 1) * 6,
       include: [
         {
           model: Recipient,
           as: 'recipient',
-          attributes: ['id', 'name'],
+          attributes: [
+            'id',
+            'name',
+            'state',
+            'city',
+            'street',
+            'zip_code',
+            'street_number',
+          ],
         },
         {
           model: Deliveryman,
           as: 'deliveryman',
           attributes: ['id', 'name'],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['id', 'path', 'url'],
         },
       ],
     });
