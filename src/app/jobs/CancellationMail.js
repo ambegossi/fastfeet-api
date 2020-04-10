@@ -10,7 +10,7 @@ class CancellationMail {
 
     await Mail.sendMail({
       to: `${deliveryman.name} <${deliveryman.email}>`,
-      subject: `Encomenda ${delivery_id} - ${product} cancelada - FastFeet`,
+      subject: `Encomenda ${delivery_id} (${product}) cancelada - FastFeet`,
       template: 'cancellation',
       context: {
         deliveryman: deliveryman.name,
