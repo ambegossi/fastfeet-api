@@ -33,6 +33,7 @@ routes.put('/users', UserController.update);
 routes.post('/recipients', RecipientController.store);
 routes.get('/recipients', RecipientController.index);
 routes.put('/recipients/:recipientId', RecipientController.update);
+routes.delete('/recipients/:recipientId', RecipientController.delete);
 
 routes.post('/deliverymens', DeliverymanController.store);
 routes.get('/deliverymens', DeliverymanController.index);
