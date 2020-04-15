@@ -103,9 +103,9 @@ class RecipientController {
   }
 
   async delete(req, res) {
-    const { id } = req.params;
+    const { recipientId } = req.params;
 
-    const recipient = await Recipient.findByPk(id);
+    const recipient = await Recipient.findByPk(recipientId);
 
     if (!recipient) {
       return res.status(404).json({ error: 'Recipient not found' });
