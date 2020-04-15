@@ -66,7 +66,7 @@ class RecipientController {
       name: Yup.string(),
       street: Yup.string(),
       street_number: Yup.number(),
-      complement: Yup.string(),
+      complement: Yup.string().nullable(),
       state: Yup.string(),
       city: Yup.string(),
       zip_code: Yup.number().min(8),
