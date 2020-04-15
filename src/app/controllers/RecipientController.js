@@ -84,19 +84,6 @@ class RecipientController {
       return res.status(400).json({ error: 'Recipient does not found' });
     }
 
-    // Name change case
-    const { name } = req.body;
-
-    if (name) {
-      const recipientExists = await Recipient.findOne({
-        where: { name },
-      });
-
-      if (recipientExists) {
-        return res.status(400).json({ error: 'Recipient already exists' });
-      }
-    }
-
     recipient = await recipient.update(req.body);
 
     return res.json(recipient);

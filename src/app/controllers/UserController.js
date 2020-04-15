@@ -56,7 +56,7 @@ class UserController {
     const user = await User.findByPk(req.userId);
 
     // Change email case (Only checks if user entered email)
-    if (email && email === user.email) {
+    if (email && email !== user.email) {
       const userExists = await User.findOne({ where: { email } });
 
       // If there is already a user with the same email
