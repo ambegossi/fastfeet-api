@@ -26,6 +26,8 @@ routes.put('/delivery/:id', DeliverymanDeliveryController.update);
 routes.post('/deliveries/:id/problems', DeliveryProblemController.store);
 routes.get('/deliveries/:id/problems', DeliveryProblemController.index);
 
+routes.get('/deliverymens', DeliverymanController.index);
+
 routes.use(authMiddleware); // Only applied for routes that come after
 
 routes.put('/users', UserController.update);
@@ -36,7 +38,6 @@ routes.put('/recipients/:recipientId', RecipientController.update);
 routes.delete('/recipients/:recipientId', RecipientController.delete);
 
 routes.post('/deliverymens', DeliverymanController.store);
-routes.get('/deliverymens', DeliverymanController.index);
 routes.put('/deliverymens/:id', DeliverymanController.update);
 routes.delete('/deliverymens/:id', DeliverymanController.delete);
 
