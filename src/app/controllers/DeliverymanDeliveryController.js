@@ -2,6 +2,9 @@ import * as Yup from 'yup';
 import { Op } from 'sequelize';
 import { startOfDay, endOfDay, parseISO, isBefore } from 'date-fns';
 import Delivery from '../models/Delivery';
+import Recipient from '../models/Recipient';
+import File from '../models/File';
+
 import validateTime from '../../utils/validateTime';
 
 class DeliverymanDeliveryController {
@@ -17,6 +20,26 @@ class DeliverymanDeliveryController {
           canceled_at: null,
           end_date: null,
         },
+        include: [
+          {
+            model: Recipient,
+            as: 'recipient',
+            attributes: [
+              'id',
+              'name',
+              'state',
+              'city',
+              'street',
+              'zip_code',
+              'street_number',
+            ],
+          },
+          {
+            model: File,
+            as: 'signature',
+            attributes: ['id', 'path', 'url'],
+          },
+        ],
       });
 
       return res.json(deliveries);
@@ -31,6 +54,26 @@ class DeliverymanDeliveryController {
             [Op.ne]: null,
           },
         },
+        include: [
+          {
+            model: Recipient,
+            as: 'recipient',
+            attributes: [
+              'id',
+              'name',
+              'state',
+              'city',
+              'street',
+              'zip_code',
+              'street_number',
+            ],
+          },
+          {
+            model: File,
+            as: 'signature',
+            attributes: ['id', 'path', 'url'],
+          },
+        ],
       });
 
       return res.json(deliveries);
