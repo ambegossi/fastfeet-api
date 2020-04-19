@@ -28,6 +28,10 @@ routes.get('/deliveries/:id/problems', DeliveryProblemController.index);
 
 routes.get('/deliverymens', DeliverymanController.index);
 
+routes.post('/files', upload.single('file'), FileController.store);
+
+routes.put('/deliveries/:id', DeliveryController.update);
+
 routes.use(authMiddleware); // Only applied for routes that come after
 
 routes.put('/users', UserController.update);
@@ -41,11 +45,8 @@ routes.post('/deliverymens', DeliverymanController.store);
 routes.put('/deliverymens/:id', DeliverymanController.update);
 routes.delete('/deliverymens/:id', DeliverymanController.delete);
 
-routes.post('/files', upload.single('file'), FileController.store);
-
 routes.post('/deliveries', DeliveryController.store);
 routes.get('/deliveries', DeliveryController.index);
-routes.put('/deliveries/:id', DeliveryController.update);
 routes.delete('/deliveries/:id', DeliveryController.delete);
 
 routes.get('/deliveries/problems', ProblematicDeliveriesController.index);
